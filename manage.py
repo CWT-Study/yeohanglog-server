@@ -7,6 +7,7 @@ from app.main import create_app
 from flask import Flask, url_for, render_template, request, redirect, sessions, jsonify
 from flask_restful import Resource, Api
 import app.main.service.test_service as testAPI
+import app.main.controller.test_db as testDB
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.app_context().push()
@@ -32,10 +33,11 @@ def test():
 
 @app.route('/test', methods = ['POST'])
 def test():
-	data = request.get_json()
-	print(str(data))
-	body = testAPI.test(data)
-	return jsonify(body)
+    testDB.create_table()
+    data = request.get_json()
+    print(str(data))
+    body = testAPI.test(data)
+    return jsonify(body)
 
 if __name__ == '__main__':
 	manager.run()
