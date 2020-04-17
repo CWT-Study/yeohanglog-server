@@ -9,6 +9,7 @@ $ pip install pyjwt
 $ pip install Flask-Script
 $ pip install flask_testing
 $ pip install flask_restful
+$  pip install boto3
 ```
 
 ## DynamoDB 로컬 사용법

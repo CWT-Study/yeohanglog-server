@@ -14,7 +14,8 @@
 from __future__ import print_function # Python 2/3 compatibility
 import boto3
 
-dynamodb_resource = boto3.resource('dynamodb',
+dynamodb_resource = boto3.resource(
+    'dynamodb',
     region_name='ap-northest-2',
     endpoint_url="http://localhost:8000"
 )
@@ -67,5 +68,5 @@ def delete_table():
     return table.table_status
 
 # create_table()
-delete_table()
+# delete_table()
 # show_table()

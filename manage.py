@@ -7,7 +7,6 @@ from app.main import create_app
 from flask import Flask, url_for, render_template, request, redirect, sessions, jsonify
 from flask_restful import Resource, Api
 import app.main.service.test_service as testAPI
-import app.main.controller.test_db as testDB
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.app_context().push()

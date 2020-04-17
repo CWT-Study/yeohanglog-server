@@ -1,12 +1,12 @@
 from app.main.model.test_model import Test
 from app.main.model.response_model import Response
-from app.main.controller.test_db import testDB
+import app.main.controller.test_db as testDB
 
 def test(data):
     try:
         id = data["id"]
         email = data["email"]
-        testDB.create_table()
+        #testDB.create_table()
         body = Test(id, email).to_json()
         return body
     except KeyError:
