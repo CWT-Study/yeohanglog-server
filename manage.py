@@ -28,12 +28,17 @@ def test():
     if result.wasSuccessful():
         return 0
     return 1
-
 # api.add_resource()
 
 @app.route('/test', methods = ['POST'])
 def test():
-    testDB.create_table()
+    data = request.get_json()
+    print(str(data))
+    body = testAPI.test(data)
+    return jsonify(body)
+
+@app.route('/user', methods = ['POST'])
+def user():
     data = request.get_json()
     print(str(data))
     body = testAPI.test(data)
