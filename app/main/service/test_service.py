@@ -8,11 +8,12 @@ def test(data):
         email = data["email"]
         #testDB.create_table()
         body = Test(id, email).to_json()
+        response = Response(200, body)
         return body
     except KeyError:
-        body = Response(404, "Missing Parameter").to_json()
-        return body
+        response = Response(404, "Missing Parameter").to_json()
+        return response
     except Exception as e:
         print(e)
-        body = Response(401, "Unknown error").to_json()
-        return body
+        response = Response(401, "Unknown error").to_json()
+        return response

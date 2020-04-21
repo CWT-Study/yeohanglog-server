@@ -13,11 +13,12 @@
 #
 from __future__ import print_function # Python 2/3 compatibility
 import boto3
+import dbconfig
 
 dynamodb_resource = boto3.resource(
     'dynamodb',
     region_name='ap-northest-2',
-    endpoint_url="http://localhost:8000"
+    endpoint_url=f"http://{localhost}:8000"
 )
 dynamodb_clinet = boto3.client('dynamodb',
     region_name='ap-northest-2',
