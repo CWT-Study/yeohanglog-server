@@ -1,4 +1,4 @@
-from flask import make_respons
+from flask import make_response
 import json
 
 class Response():
@@ -17,4 +17,4 @@ class Response():
         return json.dumps(self, default=lambda o: o.__dict__, indent=4)
 
     def make(self):
-        return make_respons(self.body, self.code)
+        return make_response(self.body, self.code)

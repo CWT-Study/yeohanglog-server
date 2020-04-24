@@ -1,5 +1,4 @@
 from flask import Blueprint, make_response, jsonify, request
-from models.user import User
 import app.main.service.test_service as testAPI
 
 user_service = Blueprint("user", __name__, url_prefix="/user")

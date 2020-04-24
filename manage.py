@@ -1,11 +1,9 @@
 import os
 import unittest
 
-from flask import abort
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from app.main import create_app
-from flask import Flask, url_for, render_template, request, redirect, sessions, jsonify
 from flask_restful import Resource, Api
 from app.main.controller.user_control import user_service
 
