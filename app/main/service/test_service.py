@@ -1,6 +1,5 @@
 from app.main.model.test_model import Test
 from app.main.model.response_model import Response
-import app.main.controller.test_db as testDB
 
 def test(data):
     try:
@@ -8,12 +7,11 @@ def test(data):
         email = data["email"]
         #testDB.create_table()
         body = Test(id, email).to_json()
-        response = Response(200, body)
-        return body
+        return Response(200, body).make()
     except KeyError:
         response = Response(404, "Missing Parameter").to_json()
-        return response
+        return response.make()
     except Exception as e:
         print(e)
         response = Response(401, "Unknown error").to_json()
-        return response
+        return response.make()

@@ -9,5 +9,4 @@ user_service = Blueprint("user", __name__, url_prefix="/user")
 def get_user(id: int):
     data = request.get_json()
     print(str(data))
-    response = testAPI.test(data)
-    return make_response(response.body, response.code)
+    return testAPI.test(data)
