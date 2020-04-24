@@ -18,3 +18,6 @@ class Response():
 
     def make(self):
         return make_response(self.body, self.code)
+
+    def get_error_message(self, error_message):
+        return

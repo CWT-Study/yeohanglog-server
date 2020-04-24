@@ -15,18 +15,8 @@ from __future__ import print_function # Python 2/3 compatibility
 import boto3
 import app.main.db.dbconfig as dbconfig
 
-dynamodb_resource = boto3.resource(
-    'dynamodb',
-    region_name='ap-northest-2',
-    endpoint_url=f"http://{dbconfig.config.ip}:{dbconfig.config.port}"
-)
-dynamodb_clinet = boto3.client('dynamodb',
-    region_name='ap-northest-2',
-    endpoint_url="http://localhost:8000"
-)
-
 def create_table():
-    table = dynamodb_resource.create_table(
+    table = dbconfig.getDBResourceInstance().create_table(
         TableName='Test',
         KeySchema=[
             {
@@ -59,11 +49,11 @@ def create_table():
     return table.table_status
 
 def show_table():
-    table_list = dynamodb_clinet.list_tables()
+    table_list = dbconfig.getDBClientInstance().list_tables()
     print(table_list)
 
 def delete_table():
-    table = dynamodb_resource.Table('Test')
+    table = dbconfig.getDBResourceInstance().Table('Test')
     table.delete()
     print("Table status:", table.table_status)
     return table.table_status
