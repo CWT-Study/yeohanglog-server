@@ -5,11 +5,11 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from app.main import create_app
 from flask_restful import Resource, Api
-from app.main.controller.user_control import user_service
+from app.main.controller.user_control import user_control
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.app_context().push()
-app.register_blueprint(user_service)
+app.register_blueprint(user_control)
 api = Api(app)
 manager = Manager(app)
 migrate = Migrate(app)
