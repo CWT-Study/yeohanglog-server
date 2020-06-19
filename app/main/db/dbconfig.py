@@ -1,22 +1,13 @@
 import boto3
+import pymongo
 
 region = "ap-northest-2"
-ip = "localhost"
-port = 8000
+ip = "127.0.0.1"
+port = 27017
+
+def get_connection():
+    return pymongo.MongoClient(ip, port)["triplog"]
 
 
-def getDBResourceInstance():
-    dynamodb_resource = boto3.resource(
-        'dynamodb',
-        region_name=region,
-        endpoint_url=f"http://{ip}:{port}"
-    )
-    return dynamodb_resource
-
-def getDBClientInstance():
-    dynamodb_clinet = boto3.client(
-        'dynamodb',
-        region_name=region,
-        endpoint_url=f"http://{ip}:{port}"
-    )
-    return dynamodb_clinet
+def get_user_collection():
+    return get_connection()["user"]

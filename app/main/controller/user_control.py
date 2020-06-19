@@ -23,3 +23,10 @@ user_control = Blueprint("user", __name__, url_prefix="/user")
 def test():
     data = {'a':'b','b':'a'}
     return user_service.test(data)
+
+
+@user_control.route("/signin", methods=["POST"])
+@get_api
+def sign_in():
+    data = request.get_json()
+    return user_service.signin(data)

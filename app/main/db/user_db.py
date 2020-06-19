@@ -12,8 +12,8 @@
 #  specific language governing permissions and limitations under the License.
 #
 from __future__ import print_function # Python 2/3 compatibility
-import boto3
 import app.main.db.dbconfig as dbconfig
+from app.main.model.user_model import UserModel
 
 def create_table():
     table = dbconfig.getDBResourceInstance().create_table(
@@ -57,6 +57,19 @@ def delete_table():
     table.delete()
     print("Table status:", table.table_status)
     return table.table_status
+
+def insert_user(uuid, nickname, created_at):
+    try:
+        coll = dbconfig.get_user_collection()
+        user = UserModel(_id=uuid, nickname=nickname, created_at=created_at).to_dict()
+        coll.insert(user)
+        return str(user)
+    except Exception as e:
+        print(e)
+        return None
+
+
+
 
 # create_table()
 # delete_table()
