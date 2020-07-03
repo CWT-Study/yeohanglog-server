@@ -63,7 +63,19 @@ def insert_user(uuid, nickname, created_at):
         coll = dbconfig.get_user_collection()
         user = UserModel(_id=uuid, nickname=nickname, created_at=created_at).to_dict()
         coll.insert(user)
-        return str(user)
+        return user
+    except Exception as e:
+        print(e)
+        return None
+
+def find_user(dict):
+    try:
+        coll = dbconfig.get_user_collection()
+        result = coll.find(dict)
+        item_array = []
+        for item in result:
+            item_array.append(item)
+        return { "result" : item_array}
     except Exception as e:
         print(e)
         return None

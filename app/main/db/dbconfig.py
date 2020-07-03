@@ -11,3 +11,6 @@ def get_connection():
 
 def get_user_collection():
     return get_connection()["user"]
+
+def get_trip_collection():
+    return get_connection()["trip"]

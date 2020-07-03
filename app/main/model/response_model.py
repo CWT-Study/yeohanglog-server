@@ -16,6 +16,8 @@ class Response():
     MESSAGE_UNKOWN = "UNOWN ERROR"
     MESSAGE_ERROR_DB = "DBERROR"
     MESSAGE_ERROR_PARAMETER = "MISSING PARAMETER"
+
+
     def __init__(self, body, code):
         self.code = code
         self.body = body
@@ -28,11 +30,11 @@ class Response():
         return json.dumps(self, default=lambda o: o.__dict__, indent=4)
 
     def to_dict(self):
+        # self.__dict__
         return json.loads(self.to_json())
 def get_api(fun):
     @wraps(fun)
     def decorate(*args, **kwargs):
-
         return make_response(fun(*args, **kwargs))
     return decorate
 
