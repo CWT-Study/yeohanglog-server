@@ -6,7 +6,7 @@ from flask_script import Manager
 from app.main import create_app
 from flask_restful import Resource, Api
 from app.main.controller.user_control import user_control
-from app.main.db.dbconfig import create_mongoClient
+from app.main.db.dbconfig import create_mongo_client
 
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
@@ -17,10 +17,12 @@ manager = Manager(app)
 migrate = Migrate(app)
 manager.add_command('db', MigrateCommand)
 
+
 @manager.command
 def run():
-    create_mongoClient()
+    create_mongo_client()
     app.run()
+
 
 @manager.command
 def test():

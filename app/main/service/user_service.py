@@ -1,17 +1,20 @@
 from app.main.model.response_model import Response
 from app.main.model.user_model import UserModel
-import app.main.db.user_db as db
 import app.main.const as const
 import os
+from app.main.db.dbconfig import db_session, USER_TABLE
+from app.main.model.user_model import UserModel
+from pymongo.database import Database
+import pymongo
 
 
-def signin(data):
+@db_session
+def signin(data, conn: Database = None):
     try:
         uuid = data["uuid"]
         nickname = data["nickname"]
-        print(uuid)
-        print(nickname)
-        response_body = db.insert_user(uuid, nickname, const.get_utctime_string())
+        response_body = UserModel(_id=uuid, nickname=nickname, created_at= const.get_utctime_string()).to_dict()
+        conn[USER_TABLE].insert(response_body)
         print(response_body)
         if response_body:
             response_code = Response.CODE_SUCCESS
@@ -29,7 +32,8 @@ def signin(data):
         return response_body, response_code
 
 
-def get_user_info(arg):
+@db_session
+def get_user_info(arg, conn: Database = None):
     try:
         response_body = {}
         response_code = 200
@@ -54,7 +58,7 @@ def get_user_info(arg):
             response_code = Response.CODE_SUCCESS
         else:
             print("dbconnect")
-            response_body = db.find_user(query_dict)
+            response_body = {'result': list(conn[USER_TABLE].find(query_dict))}
             if response_body:
                 response_code = Response.CODE_SUCCESS
             else:

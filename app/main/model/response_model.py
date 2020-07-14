@@ -17,14 +17,12 @@ class Response():
     MESSAGE_ERROR_DB = "DBERROR"
     MESSAGE_ERROR_PARAMETER = "MISSING PARAMETER"
 
-
     def __init__(self, body, code):
         self.code = code
         self.body = body
 
     def get_error_message(self, error_message):
-
-        return { "error_message" }
+        return {"error_message"}
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, indent=4)
@@ -32,9 +30,11 @@ class Response():
     def to_dict(self):
         # self.__dict__
         return json.loads(self.to_json())
+
+
 def get_api(fun):
     @wraps(fun)
     def decorate(*args, **kwargs):
         return make_response(fun(*args, **kwargs))
-    return decorate
 
+    return decorate
