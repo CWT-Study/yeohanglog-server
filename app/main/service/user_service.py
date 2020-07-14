@@ -5,20 +5,6 @@ import app.main.const as const
 import os
 
 
-def test(data):
-    # 기능추가는 여기서
-
-    response_body = UserModel(data['a'], data['b']).to_json()  # Model을 사용할 경우 (Model은 Response(response_model)을상속받음)
-    print(response_body)
-
-    response_body = {  # Model을 사용 안할경우
-        'model': 'no',
-        'name': 'sangmin'
-    }
-
-    return response_body, Response.CODE_SUCCESS
-
-
 def signin(data):
     try:
         uuid = data["uuid"]
@@ -84,7 +70,7 @@ def get_user_info(arg):
 
 def save_profile_image(uuid, files):
     try:
-        path = os.path.join(os.getcwd(), "image", "profile", uuid)
+        path = os.path.join(const.PROFILE_PATH, uuid)
         if not os.path.isdir(path):
             print(f"make dir {path}")
             os.mkdir(path)

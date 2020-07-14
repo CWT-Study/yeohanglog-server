@@ -8,11 +8,13 @@ class Permission():
         self.info = info
         self.ad = ad
 
+
 class Push():
 
     def __init__(self, app_push=True, add_push=True):
         self.app_push = app_push
         self.add_push = add_push
+
 
 class UserModel(Response):
 
