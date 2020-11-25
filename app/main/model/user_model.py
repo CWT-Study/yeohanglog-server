@@ -17,16 +17,17 @@ class Push():
 
 
 class UserModel(Response):
-
-    def __init__(self, _id="", nickname="", email="", social_id="", pushtoken="", profile="", created_at="",
-                 updated_at="", permisision=Permission(), push=Push()):
+    def __init__(self, _id="", nickname="", email="", social_id="", type="", invite_code="", pushtoken="", profile="", created_at="",
+                 updated_at= "", permission=Permission(), push=Push()):
         self._id = _id
         self.nickname = nickname
         self.email = email
         self.social_id = social_id
+        self.invite_code = invite_code
+        self.type = type
         self.pushtoken = pushtoken
         self.profile = profile
         self.created_at = created_at
         self.updated_at = updated_at
-        self.permission = permisision
+        self.permission = permission
         self.push = push

@@ -5,15 +5,26 @@ import os
 from app.main.db.dbconfig import db_session, USER_TABLE
 from app.main.model.user_model import UserModel
 from pymongo.database import Database
-import pymongo
+import app.main.util as util
 
 
 @db_session
 def signin(data, conn: Database = None):
     try:
-        uuid = data["uuid"]
-        nickname = data["nickname"]
-        response_body = UserModel(_id=uuid, nickname=nickname, created_at= const.get_utctime_string()).to_dict()
+        response_body = UserModel(
+            _id=util.create_uuid(),
+            nickname=data["nickname"],
+            profile=data["profile"],
+            type=data["type"],
+            social_id=data["socialId"],
+            invite_code=util.create_invitecode(),
+            pushtoken=data["pushToken"],
+            created_at=util.get_utctime_string(),
+            updated_at=util.get_utctime_string(),
+            permission=data["permission"],
+            push=data["push"]
+        ).to_dict()
+        print(response_body)
         conn[USER_TABLE].insert(response_body)
         print(response_body)
         if response_body:
@@ -21,11 +32,12 @@ def signin(data, conn: Database = None):
         else:
             response_body = Response.MESSAGE_ERROR_DB
             response_code = Response.CODE_ERROR_DB
-    except KeyError:
+    except KeyError as e:
+        print(e)
         response_body = Response.MESSAGE_ERROR_PARAMETER
         response_code = Response.CODE_ERROR_MISSING_PARAMETER
-    except Exception:
-        print(Exception)
+    except Exception as e:
+        print(e)
         response_body = Response.MESSAGE_UNKOWN
         response_code = Response.CODE_ERROR_UNKOWN
     finally:

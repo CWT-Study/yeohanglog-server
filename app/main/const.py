@@ -1,5 +1,3 @@
-import datetime
-import pytz
 import os
 
 
@@ -7,5 +5,3 @@ import os
 # TRIP_PICTURE_PATH = os.join(os.getcwd(), "image", "trip")
 
 
-def get_utctime_string():
-    return str(datetime.datetime.now(tz=pytz.utc).isoformat())
