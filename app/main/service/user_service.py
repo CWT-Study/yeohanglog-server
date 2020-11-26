@@ -6,10 +6,11 @@ from app.main.db.dbconfig import db_session, USER_TABLE
 from app.main.model.user_model import UserModel
 from pymongo.database import Database
 import app.main.util as util
+import logging
 
 
 @db_session
-def signin(data, conn: Database = None):
+def user_sign(data, conn: Database = None):
     try:
         response_body = UserModel(
             _id=util.create_uuid(),
@@ -24,20 +25,20 @@ def signin(data, conn: Database = None):
             permission=data["permission"],
             push=data["push"]
         ).to_dict()
-        print(response_body)
+        logging.info(response_body)
         conn[USER_TABLE].insert(response_body)
-        print(response_body)
+        logging.info(response_body)
         if response_body:
             response_code = Response.CODE_SUCCESS
         else:
             response_body = Response.MESSAGE_ERROR_DB
             response_code = Response.CODE_ERROR_DB
     except KeyError as e:
-        print(e)
+        logging.error(e)
         response_body = Response.MESSAGE_ERROR_PARAMETER
         response_code = Response.CODE_ERROR_MISSING_PARAMETER
     except Exception as e:
-        print(e)
+        logging.error(e)
         response_body = Response.MESSAGE_UNKOWN
         response_code = Response.CODE_ERROR_UNKOWN
     finally:
@@ -49,7 +50,6 @@ def get_user_info(arg, conn: Database = None):
     try:
         response_body = {}
         response_code = 200
-        print(arg.get('asdfasdfasdf', ''))
         query_dict = {}
         if "uuid" in arg:
             query_dict["_id"] = arg["uuid"]
@@ -69,7 +69,6 @@ def get_user_info(arg, conn: Database = None):
             response_body = {}
             response_code = Response.CODE_SUCCESS
         else:
-            print("dbconnect")
             response_body = {'result': list(conn[USER_TABLE].find(query_dict))}
             if response_body:
                 response_code = Response.CODE_SUCCESS
@@ -77,7 +76,7 @@ def get_user_info(arg, conn: Database = None):
                 response_body = Response.MESSAGE_ERROR_DB
                 response_code = Response.CODE_ERROR_DB
     except Exception as e:
-        print(e)
+        logging.error(e)
         response_body = Response.MESSAGE_UNKOWN
         response_code = Response.CODE_ERROR_UNKOWN
     finally:
@@ -88,12 +87,12 @@ def save_profile_image(uuid, files):
     try:
         path = os.path.join(const.PROFILE_PATH, uuid)
         if not os.path.isdir(path):
-            print(f"make dir {path}")
+            logging.info(f"make dir {path}")
             os.mkdir(path)
         else:
-            print("Exsist Dir")
+            logging.info("Exsist Dir")
         file = files["profile"] #form tag에 이름이 profile인 파일 가져오기
-        print(file.filename)
+        logging.info(file.filename)
         file.save(os.path.join(path, f"profile_{len(os.listdir(path))}.jpg")) # 회원 디렉토리의 프로필 갯수대로 다음 이름이 결정 ex) profile_0
         response_body = Response.MESSAGE_SUCCESS
         response_code = Response.CODE_SUCCESS
@@ -101,7 +100,7 @@ def save_profile_image(uuid, files):
         response_body = Response.MESSAGE_ERROR_PARAMETER
         response_code = Response.CODE_ERROR_MISSING_PARAMETER
     except Exception as e:
-        print(e)
+        logging.error(e)
         response_body = Response.MESSAGE_UNKOWN
         response_code = Response.CODE_ERROR_UNKOWN
     finally:

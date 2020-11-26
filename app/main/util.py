@@ -3,10 +3,11 @@ import shortuuid
 import datetime
 import datetime
 import pytz
+import logging
 
 def create_uuid():
     uuid = uuid_made.uuid1()
-    print(uuid)
+    logging.debug(uuid)
     return str(uuid)
 
 # def create_uuid():
@@ -16,7 +17,7 @@ def create_uuid():
 
 def create_invitecode():
     code = shortuuid.ShortUUID().random(6)
-    print(code)
+    logging.debug(code)
     return str(code)
 
 

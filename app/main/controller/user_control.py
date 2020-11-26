@@ -2,7 +2,6 @@ from flask import Blueprint, request
 
 import app.main.service.user_service as user_service
 from app.main.model.response_model import get_api
-import app.main.db.dbconfig as db
 
 user_control = Blueprint("user", __name__, url_prefix="/user")
 
@@ -19,11 +18,11 @@ user_control = Blueprint("user", __name__, url_prefix="/user")
 #     print(str(data))
 #     return user_service.login(data)
 
-@user_control.route("/signin", methods=["POST"])
+@user_control.route("/sign", methods=["POST"])
 @get_api
 def sign_in():
     body = request.get_json()
-    return user_service.signin(body)
+    return user_service.user_sign(body)
 
 
 @user_control.route("/", methods=["GET"])
