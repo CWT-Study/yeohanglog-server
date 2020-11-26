@@ -3,7 +3,7 @@ import os
 from app.main import create_app
 from flask_restful import Resource, Api
 from app.main.controller.user_control import user_control
-from app.main.db.dbconfig import create_mongo_client
+from app.main.db.db_config import create_mongo_client
 import logging.config
 from logging_conf import LOGGING_CONFIG
 
@@ -12,8 +12,6 @@ app.app_context().push()
 app.register_blueprint(user_control)
 api = Api(app)
 logging.config.dictConfig(LOGGING_CONFIG)
-
-
 create_mongo_client()
 
 

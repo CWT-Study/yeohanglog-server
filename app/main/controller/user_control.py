@@ -32,6 +32,13 @@ def get_user():
     return user_service.get_user_info(args)
 
 
+@user_control.route("/login", methods=["Post"])
+@get_api
+def login_user():
+    args = request.args
+    return user_service.login_user(args)
+
+
 @user_control.route("/profile/<uuid>", methods=["GET", "POST"])
 @get_api
 def profile(uuid):

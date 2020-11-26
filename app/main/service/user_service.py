@@ -2,32 +2,31 @@ from app.main.model.response_model import Response
 from app.main.model.user_model import UserModel
 import app.main.const as const
 import os
-from app.main.db.dbconfig import db_session, USER_TABLE
+# from app.main.db.db_config import db_session, USER_TABLE
 from app.main.model.user_model import UserModel
-from pymongo.database import Database
+# from pymongo.database import Database
 import app.main.util as util
 import logging
+import app.main.db.db_manager as db_manager
 
 
-@db_session
-def user_sign(data, conn: Database = None):
+def sign_user(body):
     try:
         response_body = UserModel(
             _id=util.create_uuid(),
-            nickname=data["nickname"],
-            profile=data["profile"],
-            type=data["type"],
-            social_id=data["socialId"],
+            nickname=body["nickName"],
+            profile=body["profile"],
+            type=body["type"],
+            social_id=body["socialId"],
             invite_code=util.create_invitecode(),
-            pushtoken=data["pushToken"],
+            pushtoken=body["pushtoken"],
             created_at=util.get_utctime_string(),
             updated_at=util.get_utctime_string(),
-            permission=data["permission"],
-            push=data["push"]
+            permission=body["permission"],
+            push=body["push"]
         ).to_dict()
         logging.info(response_body)
-        conn[USER_TABLE].insert(response_body)
-        logging.info(response_body)
+        db_manager.push_db_coll(db_manager.USER_TABLE, response_body)
         if response_body:
             response_code = Response.CODE_SUCCESS
         else:
@@ -45,8 +44,7 @@ def user_sign(data, conn: Database = None):
         return response_body, response_code
 
 
-@db_session
-def get_user_info(arg, conn: Database = None):
+def get_user_info(arg):
     try:
         response_body = {}
         response_code = 200
@@ -69,7 +67,8 @@ def get_user_info(arg, conn: Database = None):
             response_body = {}
             response_code = Response.CODE_SUCCESS
         else:
-            response_body = {'result': list(conn[USER_TABLE].find(query_dict))}
+            logging.debug(query_dict)
+            response_body = {'result': db_manager.pop_db_coll_to_list(db_manager.USER_TABLE, query_dict)}
             if response_body:
                 response_code = Response.CODE_SUCCESS
             else:
@@ -81,6 +80,14 @@ def get_user_info(arg, conn: Database = None):
         response_code = Response.CODE_ERROR_UNKOWN
     finally:
         return response_body, response_code
+
+
+def update_user_pushtoken(uuid, pushtoken):
+    None
+
+
+def login_user(body):
+    None
 
 
 def save_profile_image(uuid, files):
