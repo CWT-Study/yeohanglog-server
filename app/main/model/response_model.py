@@ -1,6 +1,7 @@
 from flask import make_response
 from functools import wraps
 import json
+import logging
 
 
 class Response():
@@ -32,9 +33,29 @@ class Response():
         return json.loads(self.to_json())
 
 
-def get_api(fun):
+# def get_response_model(fun):
+#     @wraps(fun)
+#     def decorate(*args, **kwargs):
+#         return make_response(fun(*args, **kwargs))
+#     return decorate
+#
+
+def get_response(fun):
     @wraps(fun)
     def decorate(*args, **kwargs):
-        return make_response(fun(*args, **kwargs))
-
+        response_body : str = {}
+        response_code : int = 0
+        try:
+            response_body= fun(*args, **kwargs)
+            response_code= Response.CODE_SUCCESS
+        except KeyError as e:
+            logging.error(e)
+            response_body = Response.MESSAGE_ERROR_PARAMETER
+            response_code = Response.CODE_ERROR_MISSING_PARAMETER
+        except Exception as e:
+            logging.error(e)
+            response_body = Response.MESSAGE_UNKOWN
+            response_code = Response.CODE_ERROR_UNKOWN
+        finally:
+            return make_response(response_body, response_code)
     return decorate

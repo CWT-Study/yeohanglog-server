@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from functools import wraps
 
 region = "ap-northest-2"
-ip = "192.168.240.15"
+ip = "127.0.0.1"
 port = 27017
 
 DATABASE_NAME = "triplog"

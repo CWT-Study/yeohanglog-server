@@ -1,9 +1,8 @@
 from flask import Blueprint, request
-
 import app.main.service.user_service as user_service
-from app.main.model.response_model import get_api
+from app.main.model.response_model import get_response
 
-user_control = Blueprint("user", __name__, url_prefix="/user")
+user_blueprint = Blueprint("user", __name__, url_prefix="/TripLog/user")
 
 
 # @user_control.route("/", methods=["POST"])
@@ -18,22 +17,22 @@ user_control = Blueprint("user", __name__, url_prefix="/user")
 #     print(str(data))
 #     return user_service.login(data)
 
-@user_control.route("/sign", methods=["POST"])
-@get_api
+@user_blueprint.route("/sign", methods=["POST"])
+@get_response
 def sign_in():
     body = request.get_json()
     return user_service.user_sign(body)
 
 
-@user_control.route("/", methods=["GET"])
-@get_api
+@user_blueprint.route("/", methods=["GET"])
+@get_response
 def get_user():
     args = request.args
     return user_service.get_user_info(args)
 
 
-@user_control.route("/profile/<uuid>", methods=["GET", "POST"])
-@get_api
+@user_blueprint.route("/profile/<uuid>", methods=["GET", "POST"])
+@get_response
 def profile(uuid):
     if request.method == 'GET':
         None
