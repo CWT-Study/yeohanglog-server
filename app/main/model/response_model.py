@@ -12,11 +12,13 @@ class Response():
     CODE_ERROR_UNKOWN = 401
     CODE_ERROR_DB = 402
     CODE_ERROR_MISSING_PARAMETER = 403
+    CODE_ERROR_NOT_FIND_USER = 403
 
     MESSAGE_SUCCESS = "SUCCESS"
     MESSAGE_UNKOWN = "UNOWN ERROR"
     MESSAGE_ERROR_DB = "DBERROR"
     MESSAGE_ERROR_PARAMETER = "MISSING PARAMETER"
+    MESSAGE_NOT_FIND_USER = "NOT FIND USER FROM DB"
 
     def __init__(self, body, code):
         self.code = code
@@ -43,7 +45,7 @@ class Response():
 def get_response(fun):
     @wraps(fun)
     def decorate(*args, **kwargs):
-        response_body : str = {}
+        response_body : dict = {}
         response_code : int = 0
         try:
             response_body= fun(*args, **kwargs)
@@ -52,6 +54,10 @@ def get_response(fun):
             logging.error(e)
             response_body = Response.MESSAGE_ERROR_PARAMETER
             response_code = Response.CODE_ERROR_MISSING_PARAMETER
+        except NotFindUserException as e:
+            logging.error(e)
+            response_body = Response.MESSAGE_NOT_FIND_USER
+            response_code = Response.CODE_ERROR_NOT_FIND_USER
         except Exception as e:
             logging.error(e)
             response_body = Response.MESSAGE_UNKOWN
@@ -59,3 +65,8 @@ def get_response(fun):
         finally:
             return make_response(response_body, response_code)
     return decorate
+
+
+class NotFindUserException(Exception):
+    def __init__(self):
+        super().__init__("Not Find User From Mongo DB")

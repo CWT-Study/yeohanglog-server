@@ -10,6 +10,7 @@ from app.main.controller.triplog_control import triplog_blueprint
 from app.main.db.dbconfig import create_mongo_client
 import logging.config
 from app.main.logging_conf import LOGGING_CONFIG
+import app.main.util as util
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.app_context().push()
@@ -22,6 +23,7 @@ api = Api(app)
 logging.config.dictConfig(LOGGING_CONFIG)
 
 create_mongo_client()
+util.create_image_dir()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

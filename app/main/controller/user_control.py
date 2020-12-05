@@ -31,6 +31,13 @@ def get_user():
     return user_service.get_user_info(args)
 
 
+@user_blueprint.route("/login/<uuid>", methods=[ "POST"])
+@get_response
+def login_user(uuid):
+    body = request.get_json()
+    return user_service.login_user(uuid, body)
+
+
 @user_blueprint.route("/profile/<uuid>", methods=["GET", "POST"])
 @get_response
 def profile(uuid):
