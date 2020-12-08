@@ -16,7 +16,7 @@ class Push():
 
 class UserModel(Response):
     def __init__(self, _id="", nickname="", email="", social_id="", type="", invite_code="", pushtoken="", profile="", created_at="",
-                 updated_at= "", permission=Permission(), push=Push()):
+                 updated_at= "", logined_at= "", permission=Permission(), push=Push()):
         self._id = _id
         self.nickname = nickname
         self.email = email
@@ -27,5 +27,6 @@ class UserModel(Response):
         self.profile = profile
         self.created_at = created_at
         self.updated_at = updated_at
+        self.logined_at = logined_at
         self.permission = permission
         self.push = push

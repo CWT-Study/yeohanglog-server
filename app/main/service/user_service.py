@@ -8,23 +8,23 @@ from pymongo.database import Database
 import app.main.util as util
 import logging
 
-
 @db_session
-def user_sign(body, conn: Database = None):
+def sign_user(body, conn: Database = None):
     logging.debug("create user API call")
-    response_body = UserModel(
-        _id=util.create_uuid(),
-        nickname=body["nickname"],
-        profile=body["profile"],
-        social_type=body["socialType"],
-        social_id=body["socialId"],
-        invite_code=util.create_invitecode(),
-        pushtoken="",
-        created_at=util.get_utctime_string(),
-        updated_at=util.get_utctime_string(),
-        permission=body["permission"],
-        push=body["push"]
-    ).to_dict()
+    response_body = {
+        "_id": util.create_uuid(),
+        "nickName": body["nickname"],
+        "profile": body["profile"],
+        "socialType": body["socialType"],
+        "socialId": body["socialId"],
+        "inviteCode": util.create_invitecode(),
+        "pushToekn":  body["pushToken"],
+        "createdAt": util.get_utctime_string(),
+        "updatedAt": util.get_utctime_string(),
+        "loginedAt": "",
+        "permission": body["permission"],
+        "push": body["push"]
+    }
     conn[USER_TABLE].insert(response_body)
     logging.info(response_body)
     return response_body
@@ -61,7 +61,7 @@ def get_user_info(arg, conn: Database = None):
 def login_user(uuid, body, conn: Database = None):
     logging.debug("login API call")
     find_dict = {"_id": uuid}
-    set_dict = {"$set": {"pushToken": body["pushToken"]}}
+    set_dict = {"$set": {"pushToken": body["pushToken"], "loginedAt": util.get_utctime_string()}}
     response_body = conn.user.find_one_and_update(
         find_dict,
         set_dict,

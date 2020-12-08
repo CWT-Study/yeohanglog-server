@@ -2,7 +2,7 @@ from flask import Blueprint, request
 import app.main.service.user_service as user_service
 from app.main.model.response_model import get_response
 
-user_blueprint = Blueprint("user", __name__, url_prefix="/TripLog/user")
+user_blueprint = Blueprint("user", __name__, url_prefix="/tl/user")
 
 
 # @user_control.route("/", methods=["POST"])
@@ -21,7 +21,7 @@ user_blueprint = Blueprint("user", __name__, url_prefix="/TripLog/user")
 @get_response
 def sign_in():
     body = request.get_json()
-    return user_service.user_sign(body)
+    return user_service.sign_user(body)
 
 
 @user_blueprint.route("/", methods=["GET"])

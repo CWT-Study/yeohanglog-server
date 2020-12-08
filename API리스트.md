@@ -2,10 +2,11 @@
 
 ### 유저
 
-- [ ] 로그인 API (POST)
-- [ ] 회원가입 API (POST)
-- [ ] 회원정보 API (GET)
+- [x] 로그인 API (POST)
+- [x] 회원가입 API (POST)
+- [x] 회원정보 API (GET)
 - [ ] 회원정보 수정 (PUT)
+- [x] 프로필 수정(POST)
 - [ ] 로그아웃 (DELETE)
 - [ ] 회원탈퇴 (DELETE)
 
