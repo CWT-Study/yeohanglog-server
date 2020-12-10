@@ -1,9 +1,10 @@
 import uuid as uuid_made
 import shortuuid
 import datetime
-import datetime
+from datetime import datetime
 import pytz
 import logging
+import time
 import os
 import app.main.const as const
 
@@ -45,8 +46,17 @@ def create_invitecode():
     return str(code)
 
 
-def get_utctime_string():
-    return str(datetime.datetime.now(tz=pytz.utc).isoformat())
+def get_now_isotime():
+    return datetime.now()
 
 
-create_invitecode()
+def string_to_isotime(string):
+    return datetime.strptime(string, '%Y-%m-%dT%H:%M:%S%z')
+
+
+def create_obejctId(uuid : str=""):
+    #밀리세컨드 + uuid 20글자
+    uuid=uuid.replace("-", "")
+    logging.debug(uuid[:20])
+    object_id = hex(int(round(time.time() * 1000)))[2:] + uuid[:20]
+    return object_id

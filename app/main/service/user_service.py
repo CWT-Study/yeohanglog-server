@@ -13,17 +13,23 @@ def sign_user(body, conn: Database = None):
     logging.debug("create user API call")
     response_body = {
         "_id": util.create_uuid(),
-        "nickName": body["nickname"],
-        "profile": body["profile"],
+        "nickName": body["nickName"],
+        "profile": "",
         "socialType": body["socialType"],
         "socialId": body["socialId"],
         "inviteCode": util.create_invitecode(),
-        "pushToekn":  body["pushToken"],
-        "createdAt": util.get_utctime_string(),
-        "updatedAt": util.get_utctime_string(),
+        "pushToekn":  "",
+        "createdAt": util.get_now_isotime(),
+        "updatedAt": util.get_now_isotime(),
         "loginedAt": "",
-        "permission": body["permission"],
-        "push": body["push"]
+        "permission": {
+            "info": body["permission"]["info"],
+            "ad": body["permission"]["ad"]
+        },
+        "push": {
+            "app": body["push"]["app"],
+            "ad": body["push"]["ad"],
+        }
     }
     conn[USER_TABLE].insert(response_body)
     logging.info(response_body)
@@ -45,10 +51,6 @@ def get_user_info(arg, conn: Database = None):
         query_dict["socialId"] = arg["socialId"]
     if "socialType" in arg:
         query_dict["socialType"] = arg["socialType"]
-    if "createdAt" in arg:
-        query_dict["createdAt"] = arg["createdAt"]
-    if "updatedAt" in arg:
-        query_dict["updatedAt"] = arg["updatedAt"]
     if len(query_dict) == 0:
         logging.debug("Not exit query")
     else:
@@ -61,7 +63,7 @@ def get_user_info(arg, conn: Database = None):
 def login_user(uuid, body, conn: Database = None):
     logging.debug("login API call")
     find_dict = {"_id": uuid}
-    set_dict = {"$set": {"pushToken": body["pushToken"], "loginedAt": util.get_utctime_string()}}
+    set_dict = {"$set": {"pushToken": body["pushToken"], "loginedAt": util.get_now_isotime()}}
     response_body = conn.user.find_one_and_update(
         find_dict,
         set_dict,
@@ -72,7 +74,7 @@ def login_user(uuid, body, conn: Database = None):
     return response_body
 
 
-def save_profile_image(uuid, files):
+def save_profile(uuid, files):
     path = os.path.join(const.PROFILE_PATH, uuid)
     if not os.path.isdir(path):
         logging.info(f"make dir {path}")

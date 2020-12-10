@@ -19,28 +19,28 @@ user_blueprint = Blueprint("user", __name__, url_prefix="/tl/user")
 
 @user_blueprint.route("/sign", methods=["POST"])
 @get_response
-def sign_in():
+def response_sign_in():
     body = request.get_json()
     return user_service.sign_user(body)
 
 
 @user_blueprint.route("/", methods=["GET"])
 @get_response
-def get_user():
+def response_get_user():
     args = request.args
     return user_service.get_user_info(args)
 
 
 @user_blueprint.route("/login/<uuid>", methods=[ "POST"])
 @get_response
-def login_user(uuid):
+def response_login_user(uuid):
     body = request.get_json()
     return user_service.login_user(uuid, body)
 
 
 @user_blueprint.route("/profile/<uuid>", methods=["GET", "POST"])
 @get_response
-def profile(uuid):
+def response_profile(uuid):
     if request.method == 'GET':
         None
     if request.method == 'POST':

@@ -1,8 +1,8 @@
 from flask import make_response
 from functools import wraps
-from bson import ObjectId
 import json
 import logging
+from bson.objectid import ObjectId
 
 
 class Response():
@@ -53,8 +53,6 @@ def get_response(fun):
         try:
             response_body= fun(*args, **kwargs)
             response_code= Response.CODE_SUCCESS
-            if isinstance(response_body["_id"], ObjectId):
-                response_body["_id"] = response_body["_id"]["ObjectId"]
         except KeyError as e:
             logging.error(e)
             response_body = Response.MESSAGE_ERROR_PARAMETER

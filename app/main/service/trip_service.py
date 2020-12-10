@@ -2,8 +2,8 @@ from app.main.model.response_model import Response, NotFindUserException
 import app.main.const as const
 import os
 from app.main.db.dbconfig import db_session, TRIP_TABLE
-from pymongo import ReturnDocument
 from pymongo.database import Database
+from bson.objectid import ObjectId
 import app.main.util as util
 import logging
 
@@ -12,9 +12,10 @@ import logging
 def create_trip(uuid, body, conn: Database = None):
     logging.debug("create Trip API call")
     response_body = {
+        "_id": util.create_obejctId(uuid),
         "title": body["title"],
-        "startDt": body["startDt"],
-        "endDt": body["startDt"],
+        "startDt": util.string_to_isotime(body["startDt"]),
+        "endDt": util.string_to_isotime(body["endDt"]),
         "masterId": uuid,
         "repPhoto": "",
         "members": [{
@@ -27,9 +28,36 @@ def create_trip(uuid, body, conn: Database = None):
         }],
         "preparation": [],
         "readCnt": 0,
-        "createdAt": util.get_utctime_string(),
-        "updatedAt": util.get_utctime_string()
+        "createdAt": util.get_now_isotime(),
+        "updatedAt": util.get_now_isotime()
     }
-    conn[TRIP_TABLE].insert(response_body)
     logging.info(response_body)
+    conn[TRIP_TABLE].insert(response_body)
     return response_body
+
+
+@db_session
+def get_trip_list(arg, conn: Database = None):
+    logging.debug("getTrip API call")
+    response_body = {}
+    query_dict = {}
+    if "_id" in arg:
+        query_dict["_id"] = ObjectId(arg["_id"])
+    if "masterId" in arg:
+        query_dict["masterId"] = arg["masterId"]
+    if "members" in arg:
+        query_dict["members"] = arg["members"]
+    # if "startDt" in arg:
+    #     query_dict["startDt"] = arg["socialId"]
+    # if "endDt" in arg:
+    #     query_dict["endDt"] = arg["socialType"]
+    if "title" in arg:
+        query_dict["title"] = arg["title"]
+    if len(query_dict) == 0:
+        logging.debug("Not exit query")
+    else:
+        logging.debug("Trip Query = " + str(query_dict))
+        response_body = {"result": list(conn[TRIP_TABLE].find(query_dict))}
+    return response_body
+
+
