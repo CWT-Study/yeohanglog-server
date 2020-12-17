@@ -58,5 +58,5 @@ def create_obejctId(uuid : str=""):
     #밀리세컨드 + uuid 20글자
     uuid=uuid.replace("-", "")
     logging.debug(uuid[:20])
-    object_id = hex(int(round(time.time() * 1000)))[2:] + uuid[:20]
+    object_id = f"{hex(int(round(time.time() * 1000)))[2:]}-{uuid[:20]}"
     return object_id

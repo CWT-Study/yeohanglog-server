@@ -19,8 +19,8 @@ def create_trip(uuid, body, conn: Database = None):
         "masterId": uuid,
         "repPhoto": "",
         "members": [{
-            "id": uuid,
-            "permission": {
+            "uuid": uuid,
+            "authority": {
                 "plan": True,
                 "file": True,
                 "cost": True,
@@ -41,16 +41,16 @@ def get_trip_list(arg, conn: Database = None):
     logging.debug("getTrip API call")
     response_body = {}
     query_dict = {}
-    if "_id" in arg:
-        query_dict["_id"] = ObjectId(arg["_id"])
+    if "tid" in arg:
+        query_dict["_id"] = ObjectId(arg["tid"])
+    if "uuid" in arg:
+        query_dict["members.uuid"] = arg["uuid"]
     if "masterId" in arg:
         query_dict["masterId"] = arg["masterId"]
-    if "members" in arg:
-        query_dict["members"] = arg["members"]
-    # if "startDt" in arg:
-    #     query_dict["startDt"] = arg["socialId"]
-    # if "endDt" in arg:
-    #     query_dict["endDt"] = arg["socialType"]
+    if "startDt" in arg:
+        query_dict["startDt"] = {'$gte': util.string_to_isotime(arg["startDt"])}
+    if "endDt" in arg:
+        query_dict["endDt"] = {'$lte': util.string_to_isotime(arg["endDt"])}
     if "title" in arg:
         query_dict["title"] = arg["title"]
     if len(query_dict) == 0:

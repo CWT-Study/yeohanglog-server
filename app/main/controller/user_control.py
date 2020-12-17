@@ -17,7 +17,7 @@ user_blueprint = Blueprint("user", __name__, url_prefix="/tl/user")
 #     print(str(data))
 #     return user_service.login(data)
 
-@user_blueprint.route("/sign", methods=["POST"])
+@user_blueprint.route("/signin", methods=["POST"])
 @get_response
 def response_sign_in():
     body = request.get_json()
