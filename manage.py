@@ -12,7 +12,9 @@ import logging.config
 from app.main.logging_conf import LOGGING_CONFIG
 import app.main.util as util
 
+
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+
 app.app_context().push()
 app.register_blueprint(user_blueprint)
 app.register_blueprint(trip_blueprint)
@@ -21,6 +23,7 @@ app.register_blueprint(tripcost_blueprint)
 app.register_blueprint(triplog_blueprint)
 api = Api(app)
 logging.config.dictConfig(LOGGING_CONFIG)
+
 
 create_mongo_client()
 util.create_image_dir()
