@@ -53,17 +53,17 @@ def get_trip_list(arg, conn: Database = None):
 
 
 @db_session
-def create_trip(uuid, body, conn: Database = None):
+def create_trip(body, conn: Database = None):
     logging.debug("create Trip API call")
     response_body = {
-        "_id": util.create_obejctId(uuid),
+        "_id": util.create_obejctId(body["uuid"]),
         "title": body["title"],
         "startDt": util.string_to_isotime(body["startDt"]),
         "endDt": util.string_to_isotime(body["endDt"]),
-        "masterId": uuid,
+        "masterId": body["uuid"],
         "repPhoto": "",
         "members": [{
-            "uuid": uuid,
+            "uuid": body["uuid"],
             "authority": {
                 "plan": True,
                 "file": True,
@@ -81,10 +81,10 @@ def create_trip(uuid, body, conn: Database = None):
 
 
 @db_session
-def delete_trip(tid, conn: Database = None):
+def delete_trip(body, conn: Database = None):
     logging.debug("delete Trip API call")
     delete_dict = {
-        "_id": tid
+        "_id": body["tid"]
     }
     conn[TRIP_TABLE].remove(delete_dict)
     return Response.MESSAGE_SUCCESS
