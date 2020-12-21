@@ -5,6 +5,12 @@ from app.main.model.response_model import get_response
 
 trip_blueprint = Blueprint("trip", __name__, url_prefix="/tl/trip")
 
+@trip_blueprint.route("/", methods=["GET"])
+@get_response
+def response_trip_list():
+    args = request.args
+    return trip_service.get_trip_list(args)
+
 
 @trip_blueprint.route("/<uuid>", methods=["POST"])
 @get_response
@@ -75,8 +81,7 @@ def response_create_trip(uuid):
     return trip_service.create_trip(uuid, body)
 
 
-@trip_blueprint.route("/", methods=["GET"])
+@trip_blueprint.route("/<tid>", methods=["DELELTE"])
 @get_response
-def response_trip_list():
-    args = request.args
-    return trip_service.get_trip_list(args)
+def response_delete_trip(tid):
+    return trip_service.delete_trip(tid)

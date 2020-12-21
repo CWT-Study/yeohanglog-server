@@ -9,34 +9,6 @@ import logging
 
 
 @db_session
-def create_trip(uuid, body, conn: Database = None):
-    logging.debug("create Trip API call")
-    response_body = {
-        "_id": util.create_obejctId(uuid),
-        "title": body["title"],
-        "startDt": util.string_to_isotime(body["startDt"]),
-        "endDt": util.string_to_isotime(body["endDt"]),
-        "masterId": uuid,
-        "repPhoto": "",
-        "members": [{
-            "uuid": uuid,
-            "authority": {
-                "plan": True,
-                "file": True,
-                "cost": True,
-            }
-        }],
-        "preparation": [],
-        "readCnt": 0,
-        "createdAt": util.get_now_isotime(),
-        "updatedAt": util.get_now_isotime()
-    }
-    logging.info(response_body)
-    conn[TRIP_TABLE].insert(response_body)
-    return response_body
-
-
-@db_session
 def get_trip_list(arg, conn: Database = None):
     logging.debug("getTrip API call")
     response_body = {}
@@ -49,7 +21,7 @@ def get_trip_list(arg, conn: Database = None):
         query_dict["masterId"] = arg["masterId"]
     if "startDt" in arg or "endDt" in arg:
         if "startDt" in arg and "endDt" in arg:
-            date_query_dict ={
+            date_query_dict = {
                 '$or': [
                     {
                         '$and': [
@@ -78,3 +50,41 @@ def get_trip_list(arg, conn: Database = None):
         logging.debug("Trip Query = " + str(query_dict))
         response_body = {"result": list(conn[TRIP_TABLE].find(query_dict))}
     return response_body
+
+
+@db_session
+def create_trip(uuid, body, conn: Database = None):
+    logging.debug("create Trip API call")
+    response_body = {
+        "_id": util.create_obejctId(uuid),
+        "title": body["title"],
+        "startDt": util.string_to_isotime(body["startDt"]),
+        "endDt": util.string_to_isotime(body["endDt"]),
+        "masterId": uuid,
+        "repPhoto": "",
+        "members": [{
+            "uuid": uuid,
+            "authority": {
+                "plan": True,
+                "file": True,
+                "cost": True,
+            }
+        }],
+        "preparation": [],
+        "readCnt": 0,
+        "createdAt": util.get_now_isotime(),
+        "updatedAt": util.get_now_isotime()
+    }
+    logging.info(response_body)
+    conn[TRIP_TABLE].insert(response_body)
+    return response_body
+
+
+@db_session
+def delete_trip(tid, conn: Database = None):
+    logging.debug("delete Trip API call")
+    delete_dict = {
+        "_id": tid
+    }
+    conn[TRIP_TABLE].remove(delete_dict)
+    return Response.MESSAGE_SUCCESS
