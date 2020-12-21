@@ -48,11 +48,11 @@ class Response():
 def get_response(fun):
     @wraps(fun)
     def decorate(*args, **kwargs):
-        response_body : dict = {}
-        response_code : int = 0
+        response_body: dict = {}
+        response_code: int = 0
         try:
-            response_body= fun(*args, **kwargs)
-            response_code= Response.CODE_SUCCESS
+            response_body = fun(*args, **kwargs)
+            response_code = Response.CODE_SUCCESS
         except KeyError as e:
             logging.error(e)
             response_body = Response.MESSAGE_ERROR_PARAMETER
@@ -67,6 +67,7 @@ def get_response(fun):
             response_code = Response.CODE_ERROR_UNKOWN
         finally:
             return make_response(response_body, response_code)
+
     return decorate
 
 

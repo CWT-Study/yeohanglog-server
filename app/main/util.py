@@ -8,16 +8,17 @@ import time
 import os
 import app.main.const as const
 
+
 def create_uuid():
     uuid = uuid_made.uuid1()
     logging.debug(uuid)
     return str(uuid)
 
+
 # def create_uuid():
 #     uuid = shortuuid.uuid(name="triplog")
 #     print(uuid)
 #     return uuid
-
 
 
 def create_image_dir():
@@ -54,9 +55,9 @@ def string_to_isotime(string):
     return datetime.strptime(string, '%Y-%m-%dT%H:%M:%S%z')
 
 
-def create_obejctId(uuid : str=""):
-    #밀리세컨드 + uuid 20글자
-    uuid=uuid.replace("-", "")
+def create_obejctId(uuid: str = ""):
+    # 밀리세컨드 + uuid 20글자
+    uuid = uuid.replace("-", "")
     logging.debug(uuid[:20])
     object_id = f"{hex(int(round(time.time() * 1000)))[2:]}-{uuid[:20]}"
     return object_id

@@ -8,6 +8,7 @@ from pymongo.database import Database
 import app.main.util as util
 import logging
 
+
 @db_session
 def sign_user(body, conn: Database = None):
     logging.debug("create user API call")
@@ -18,7 +19,7 @@ def sign_user(body, conn: Database = None):
         "socialType": body["socialType"],
         "socialId": body["socialId"],
         "inviteCode": util.create_invitecode(),
-        "pushToekn":  "",
+        "pushToekn": "",
         "createdAt": util.get_now_isotime(),
         "updatedAt": util.get_now_isotime(),
         "loginedAt": "",

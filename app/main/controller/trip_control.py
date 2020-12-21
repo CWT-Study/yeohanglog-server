@@ -5,7 +5,8 @@ from app.main.model.response_model import get_response
 
 trip_blueprint = Blueprint("trip", __name__, url_prefix="/tl/trip")
 
-@trip_blueprint.route("/", methods=["GET","POST","UPDATE","DELETE"])
+
+@trip_blueprint.route("/", methods=["GET", "POST", "DELETE"])
 @get_response
 def response_trip():
     if request.method == 'GET':
@@ -14,12 +15,9 @@ def response_trip():
     elif request.method == 'POST':
         body = request.get_json()
         return trip_service.create_trip(body)
-    elif request.method == 'UPDATE':
-        return {}
     elif request.method == 'DELETE':
         body = request.get_json()
         return trip_service.delete_trip(body)
-
 
 # @trip_blueprint.route("/", methods=["POST"])
 # @get_response

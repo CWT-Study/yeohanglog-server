@@ -31,7 +31,7 @@ def response_get_user():
     return user_service.get_user_info(args)
 
 
-@user_blueprint.route("/login/<uuid>", methods=[ "POST"])
+@user_blueprint.route("/login/<uuid>", methods=["POST"])
 @get_response
 def response_login_user(uuid):
     body = request.get_json()

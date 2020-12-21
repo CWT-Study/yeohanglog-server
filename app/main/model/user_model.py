@@ -1,7 +1,6 @@
 from app.main.model.response_model import Response
 
 
-
 class Permission():
     def __init__(self, info=True, ad=True):
         self.info = info
@@ -15,8 +14,8 @@ class Push():
 
 
 class UserModel(Response):
-    def __init__(self, _id="", nickname="", email="", social_id="", type="", invite_code="", pushtoken="", profile="", created_at="",
-                 updated_at= "", logined_at= "", permission=Permission(), push=Push()):
+    def __init__(self, _id="", nickname="", email="", social_id="", type="", invite_code="", pushtoken="", profile="",
+                 created_at="", updated_at="", logined_at="", permission=Permission(), push=Push()):
         self._id = _id
         self.nickname = nickname
         self.email = email

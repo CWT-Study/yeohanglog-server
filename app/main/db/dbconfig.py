@@ -13,7 +13,6 @@ TRIP_INFO = 'tripinfo'
 TRIP_COST = "tripcost"
 TRIP_LOG_TABLE = "triplog"
 
-
 conn = None
 
 
