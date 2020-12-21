@@ -4,7 +4,7 @@ from app.main import create_app
 from flask_restful import Resource, Api
 from app.main.controller.user_control import user_blueprint
 from app.main.controller.trip_control import trip_blueprint
-from app.main.controller.tripinfo_control import tripinfo_blueprint
+from app.main.controller.triplan_control import tripinfo_blueprint
 from app.main.controller.tripcost_config import tripcost_blueprint
 from app.main.controller.triplog_control import triplog_blueprint
 from app.main.db.dbconfig import create_mongo_client

@@ -65,7 +65,7 @@ def login_user(uuid, body, conn: Database = None):
     logging.debug("login API call")
     find_dict = {"_id": uuid}
     set_dict = {"$set": {"pushToken": body["pushToken"], "loginedAt": util.get_now_isotime()}}
-    response_body = conn.user.find_one_and_update(
+    response_body = conn[USER_TABLE].find_one_and_update(
         find_dict,
         set_dict,
         return_document=ReturnDocument.AFTER)
@@ -75,6 +75,7 @@ def login_user(uuid, body, conn: Database = None):
     return response_body
 
 
+@db_session
 def save_profile(uuid, files):
     path = os.path.join(const.PROFILE_PATH, uuid)
     if not os.path.isdir(path):

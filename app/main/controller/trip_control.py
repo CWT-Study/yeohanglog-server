@@ -6,9 +6,9 @@ from app.main.model.response_model import get_response
 trip_blueprint = Blueprint("trip", __name__, url_prefix="/tl/trip")
 
 
-@trip_blueprint.route("/", methods=["GET", "POST", "DELETE"])
+@trip_blueprint.route("/<tid>", methods=["GET", "POST", "DELETE"])
 @get_response
-def response_trip():
+def response_trip(tid):
     if request.method == 'GET':
         args = request.args
         return trip_service.get_trip_list(args)
@@ -18,6 +18,13 @@ def response_trip():
     elif request.method == 'DELETE':
         body = request.get_json()
         return trip_service.delete_trip(body)
+
+
+@trip_blueprint.route("/member/<tid>", methods=["PUT"])
+@get_response
+def response_trip_member(tid):
+    body = request.get_json()
+    return trip_service.update_trip_member(tid, body)
 
 # @trip_blueprint.route("/", methods=["POST"])
 # @get_response

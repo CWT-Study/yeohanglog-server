@@ -1,9 +1,10 @@
-from app.main.model.response_model import Response, NotFindUserException
+from app.main.model.response_model import Response, NotFindTripException
 import app.main.const as const
 import os
 from app.main.db.dbconfig import db_session, TRIP_TABLE
 from pymongo.database import Database
 from bson.objectid import ObjectId
+from pymongo import ReturnDocument
 import app.main.util as util
 import logging
 
@@ -88,3 +89,18 @@ def delete_trip(body, conn: Database = None):
     }
     conn[TRIP_TABLE].remove(delete_dict)
     return Response.MESSAGE_SUCCESS
+
+
+@db_session
+def update_trip_member(tid, body, conn: Database = None):
+    logging.debug("update Trip Member API call")
+    find_dict = {"_id": tid}
+    set_dict = {"$set": {"members": body["members"]}}
+    response_body = conn[TRIP_TABLE].find_one_and_update(
+        find_dict,
+        set_dict,
+        return_document=ReturnDocument.AFTER)
+    if not response_body:
+        logging.info("Not Exist Trip In DB")
+        raise NotFindTripException
+    return response_body

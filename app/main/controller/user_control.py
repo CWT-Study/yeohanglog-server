@@ -38,11 +38,11 @@ def response_login_user(uuid):
     return user_service.login_user(uuid, body)
 
 
-@user_blueprint.route("/profile/<uuid>", methods=["GET", "POST"])
+@user_blueprint.route("/profile/<uuid>", methods=["GET", "UPDATE"])
 @get_response
 def response_profile(uuid):
     if request.method == 'GET':
         None
-    if request.method == 'POST':
+    if request.method == 'UPDATE':
         files = request.files
         return user_service.save_profile_image(uuid, files)

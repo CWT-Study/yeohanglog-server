@@ -14,14 +14,12 @@
 ### 여행
 - [x] 여행정보 조회 API (GET)
 - [x] 여행생성 API (POST)
-- [ ] 여행삭제 API (DELETE)
+- [x] 여행삭제 API (DELETE)
 - [ ] 여행 대표사진 수정 API(UPDATE)
 - [ ] 준비물 추가 API (POST)
 - [ ] 준비물 수정 API (PUT)
 - [ ] 준비물 삭제 API (DELETE)
-- [ ] 멤버 추가 API (POST)
-- [ ] 멤버 권한 수정 API (PUT)
-- [ ] 멤버 삭제 API (DELETE)
+- [x] 멤버 수정 API (UPDATE)
 
 ### 여행일정
 - [ ] 여행일정 추가 API (POST)

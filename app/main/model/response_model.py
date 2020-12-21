@@ -13,8 +13,10 @@ class Response():
     CODE_ERROR_UNKOWN = 401
     CODE_ERROR_DB = 402
     CODE_ERROR_MISSING_PARAMETER = 403
-    CODE_ERROR_NOT_FIND_USER = 403
+    CODE_ERROR_NOT_FIND_USER = 406
     CODE_ERROR_NOT_FIND_TRIP = 410
+    CODE_ERROR_NOT_FIND_TRIP_PLAN = 415
+    CODE_ERROR_NOT_FIND_TRIP_COST = 420
 
     MESSAGE_SUCCESS = "SUCCESS"
     MESSAGE_UNKOWN = "UNOWN ERROR"
@@ -22,6 +24,8 @@ class Response():
     MESSAGE_ERROR_PARAMETER = "MISSING PARAMETER"
     MESSAGE_NOT_FIND_USER = "NOT FIND USER FROM DB"
     MESSAGE_NOT_FIND_TRIP = "NOT FIND TRIP FROM DB"
+    MESSAGE_NOT_FIND_TRIP_PLAN = "NOT FIND TRIP PLAN FROM DB"
+    MESSAGE_NOT_FIND_TRIP_COST = "NOT FIND TRIP COST FROM DB"
 
     def __init__(self, body, code):
         self.code = code
@@ -61,6 +65,18 @@ def get_response(fun):
             logging.error(e)
             response_body = Response.MESSAGE_NOT_FIND_USER
             response_code = Response.CODE_ERROR_NOT_FIND_USER
+        except NotFindTripException as e:
+            logging.error(e)
+            response_body = Response.MESSAGE_NOT_FIND_TRIP
+            response_code = Response.CODE_ERROR_NOT_FIND_TRIP
+        except NotFindTripPlanException as e:
+            logging.error(e)
+            response_body = Response.MESSAGE_NOT_FIND_TRIP_PLAN
+            response_code = Response.CODE_ERROR_NOT_FIND_TRIP_PLAN
+        except NotFindTripCostException as e:
+            logging.error(e)
+            response_body = Response.MESSAGE_NOT_FIND_TRIP_COST
+            response_code = Response.CODE_ERROR_NOT_FIND_TRIP_COST
         except Exception as e:
             logging.error(e)
             response_body = Response.MESSAGE_UNKOWN
@@ -78,4 +94,12 @@ class NotFindUserException(Exception):
 
 class NotFindTripException(Exception):
     def __init__(self):
-        super().__init__("Not Find User From Mongo DB")
+        super().__init__("Not Find Trip From Mongo DB")
+
+class NotFindTripPlanException(Exception):
+    def __init__(self):
+        super().__init__("Not Find Trip Plan From Mongo DB")
+
+class NotFindTripCostException(Exception):
+    def __init__(self):
+        super().__init__("Not Find Trip Cost From Mongo DB")

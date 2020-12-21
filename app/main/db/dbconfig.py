@@ -9,8 +9,8 @@ DATABASE_NAME = "triplog"
 
 USER_TABLE = "user"
 TRIP_TABLE = "trip"
-TRIP_INFO = 'tripinfo'
-TRIP_COST = "tripcost"
+TRIP_PLAN_TABLE = 'tripplan'
+TRIP_COST_TABLE = "tripcost"
 TRIP_LOG_TABLE = "triplog"
 
 conn = None
