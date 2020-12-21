@@ -15,6 +15,13 @@ def response_create_trip(uuid):
      ---
      tags:
        - Trip API
+     parameters:
+       - name: uuid
+         in: path
+         type: string
+         description: description
+         required: true
+         default: None
      responses:
        200:
          description: success
